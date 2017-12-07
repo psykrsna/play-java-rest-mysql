@@ -34,8 +34,8 @@ public class JPACustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public CompletionStage<Stream<CustomerData>> list() {
-        return supplyAsync(() -> wrap(em -> select(em)), ec);
+    public CompletionStage<Stream<CustomerData>> list(Integer page) {
+        return supplyAsync(() -> wrap(em -> select(em, page)), ec);
     }
 
     @Override
@@ -67,8 +67,11 @@ public class JPACustomerRepository implements CustomerRepository {
         return Optional.ofNullable(em.find(CustomerData.class, id));
     }
 
-    private Stream<CustomerData> select(EntityManager em) {
+    private Stream<CustomerData> select(EntityManager em, Integer page) {
         TypedQuery<CustomerData> query = em.createQuery("SELECT p FROM CustomerData p", CustomerData.class);
+        Integer pageSize = 3;
+        query.setFirstResult((page-1) * pageSize);
+        query.setMaxResults(pageSize);
         return query.getResultList().stream();
     }
 

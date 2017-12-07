@@ -4,19 +4,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Play REST API</title>
+    <title>CRUD REST API using Play</title>
   </head>
 
   <body>
-    <h1>CRUD using REST API</h1>
+    <h1>CRUD REST API using Play</h1>
 
     <p>
-      To see all customers, you can do a <a href="/v1/customers">GET</a>:
+      To see a list of customers (3 per page), you can do a <a href="/v1/customers/list?page=1">GET</a>:
     </p>
 
 
     <pre>
-        <code>http GET localhost:9000/v1/customers</code>
+        <code>http GET localhost:9000/v1/customers/list?page=1</code>
+    </pre>
+
+    <p>
+      To see a particular customer's info, you can do a <a href="/v1/customers/2">GET</a>:
+    </p>
+
+
+    <pre>
+        <code>http GET localhost:9000/v1/customers/:id</code>
     </pre>
 
     <p>
@@ -25,6 +34,22 @@
 
     <pre>
         <code>http POST localhost:9000/v1/customers name="name" location="location"</code>
+    </pre>
+
+    <p>
+      To update a customer's info, do a PUT:
+    <p>
+
+    <pre>
+        <code>http PUT localhost:9000/v1/customers name="new name" location="location"</code>
+    </pre>
+
+    <p>
+      To delete a customer's info, do a DELETE:
+    <p>
+
+    <pre>
+        <code>http DELETE localhost:9000/v1/customers/:id</code>
     </pre>
 
   </body>

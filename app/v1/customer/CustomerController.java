@@ -23,7 +23,8 @@ public class CustomerController extends Controller {
     }
 
     public CompletionStage<Result> list() {
-        return handler.find().thenApplyAsync(customers -> {
+        String page = request().getQueryString("page");
+        return handler.find(page).thenApplyAsync(customers -> {
             final List<CustomerResource> customerList = customers.collect(Collectors.toList());
             return ok(Json.toJson(customerList));
         }, ec.current());

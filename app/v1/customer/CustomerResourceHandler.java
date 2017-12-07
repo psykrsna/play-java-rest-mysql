@@ -24,8 +24,8 @@ public class CustomerResourceHandler {
         this.ec = ec;
     }
 
-    public CompletionStage<Stream<CustomerResource>> find() {
-        return repository.list().thenApplyAsync(customerDataStream -> {
+    public CompletionStage<Stream<CustomerResource>> find(String page) {
+        return repository.list(Integer.parseInt(page)).thenApplyAsync(customerDataStream -> {
             return customerDataStream.map(data -> new CustomerResource(data, link(data)));
         }, ec.current());
     }

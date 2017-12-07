@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 public interface CustomerRepository {
 
-    CompletionStage<Stream<CustomerData>> list();
+    CompletionStage<Stream<CustomerData>> list(Integer page);
 
     CompletionStage<CustomerData> create(CustomerData customerData);
 
