@@ -13,5 +13,7 @@ public interface CustomerRepository {
     CompletionStage<Optional<CustomerData>> get(Long id);
 
     CompletionStage<Optional<CustomerData>> update(Long id, CustomerData customerData);
+
+    CompletionStage<Optional<CustomerData>> remove(Long id);
 }
 

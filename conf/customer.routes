@@ -4,3 +4,5 @@ POST   /                     v1.customer.CustomerController.create
 
 GET    /:id                 v1.customer.CustomerController.show(id)
 PUT    /:id                 v1.customer.CustomerController.update(id)
+
+DELETE /:id                 v1.customer.CustomerController.delete(id)           

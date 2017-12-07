@@ -58,4 +58,14 @@ public class CustomerController extends Controller {
             return created(Json.toJson(savedResource));
         }, ec.current());
     }
+
+    public CompletionStage<Result> delete(String id) {
+        return handler.delete(id).thenApplyAsync(optionalResource -> {
+            return optionalResource.map(r ->
+            ok(Json.toJson(r))
+            ).orElseGet(() ->
+                    notFound()
+            );
+        }, ec.current());
+    }
 }

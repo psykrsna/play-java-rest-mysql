@@ -50,6 +50,12 @@ public class CustomerResourceHandler {
         }, ec.current());
     }
 
+    public CompletionStage<Optional<CustomerResource>> delete(String id) {
+        return repository.remove(Long.parseLong(id)).thenApplyAsync(optionalData -> {
+            return optionalData.map(op -> new CustomerResource(op, link(op)));
+        }, ec.current());
+    }
+
     private String link(CustomerData data) {
         // Make a point of using request context here, even if it's a bit strange
         final Http.Request request = Http.Context.current().request();

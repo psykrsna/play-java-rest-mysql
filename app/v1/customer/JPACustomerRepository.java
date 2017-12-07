@@ -49,6 +49,11 @@ public class JPACustomerRepository implements CustomerRepository {
     }
 
     @Override
+    public CompletionStage<Optional<CustomerData>> remove(Long id) {
+        return supplyAsync(() -> wrap(em -> Failsafe.with(circuitBreaker).get(() -> remove(em, id))), ec);
+    }
+
+    @Override
     public CompletionStage<Optional<CustomerData>> update(Long id, CustomerData customerData) {
         return supplyAsync(() -> wrap(em -> Failsafe.with(circuitBreaker).get(() -> modify(em, id, customerData))), ec);
     }
@@ -58,13 +63,20 @@ public class JPACustomerRepository implements CustomerRepository {
     }
 
     private Optional<CustomerData> lookup(EntityManager em, Long id) throws SQLException {
-        throw new SQLException("Call this to cause the circuit breaker to trip");
-        //return Optional.ofNullable(em.find(CustomerData.class, id));
+        //throw new SQLException("Call this to cause the circuit breaker to trip");
+        return Optional.ofNullable(em.find(CustomerData.class, id));
     }
 
     private Stream<CustomerData> select(EntityManager em) {
         TypedQuery<CustomerData> query = em.createQuery("SELECT p FROM CustomerData p", CustomerData.class);
         return query.getResultList().stream();
+    }
+
+    private Optional<CustomerData> remove(EntityManager em, Long id) throws SQLException {
+        //throw new SQLException("Call this to cause the circuit breaker to trip");
+        CustomerData customer = em.find(CustomerData.class, id);
+        em.remove(customer);
+        return Optional.ofNullable(em.find(CustomerData.class, id));
     }
 
     private Optional<CustomerData> modify(EntityManager em, Long id, CustomerData customerData) throws InterruptedException {
