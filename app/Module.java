@@ -4,8 +4,8 @@ import com.codahale.metrics.Slf4jReporter;
 import com.google.inject.AbstractModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import v1.post.PostRepository;
-import v1.post.JPAPostRepository;
+import v1.customer.CustomerRepository;
+import v1.customer.JPACustomerRepository;
 
 import javax.inject.Provider;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +25,7 @@ public class Module extends AbstractModule {
     @Override
     public void configure() {
         bind(MetricRegistry.class).toProvider(MetricRegistryProvider.class).asEagerSingleton();
-        bind(PostRepository.class).to(JPAPostRepository.class).asEagerSingleton();
+        bind(CustomerRepository.class).to(JPACustomerRepository.class).asEagerSingleton();
     }
 }
 

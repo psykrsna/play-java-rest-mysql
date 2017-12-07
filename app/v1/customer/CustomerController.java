@@ -1,4 +1,4 @@
-package v1.post;
+package v1.customer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import play.libs.Json;
@@ -10,22 +10,22 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
-@With(PostAction.class)
-public class PostController extends Controller {
+@With(CustomerAction.class)
+public class CustomerController extends Controller {
 
     private HttpExecutionContext ec;
-    private PostResourceHandler handler;
+    private CustomerResourceHandler handler;
 
     @Inject
-    public PostController(HttpExecutionContext ec, PostResourceHandler handler) {
+    public CustomerController(HttpExecutionContext ec, CustomerResourceHandler handler) {
         this.ec = ec;
         this.handler = handler;
     }
 
     public CompletionStage<Result> list() {
-        return handler.find().thenApplyAsync(posts -> {
-            final List<PostResource> postList = posts.collect(Collectors.toList());
-            return ok(Json.toJson(postList));
+        return handler.find().thenApplyAsync(customers -> {
+            final List<CustomerResource> customerList = customers.collect(Collectors.toList());
+            return ok(Json.toJson(customerList));
         }, ec.current());
     }
 
@@ -41,7 +41,7 @@ public class PostController extends Controller {
 
     public CompletionStage<Result> update(String id) {
         JsonNode json = request().body().asJson();
-        PostResource resource = Json.fromJson(json, PostResource.class);
+        CustomerResource resource = Json.fromJson(json, CustomerResource.class);
         return handler.update(id, resource).thenApplyAsync(optionalResource -> {
             return optionalResource.map(r ->
                     ok(Json.toJson(r))
@@ -53,7 +53,7 @@ public class PostController extends Controller {
 
     public CompletionStage<Result> create() {
         JsonNode json = request().body().asJson();
-        final PostResource resource = Json.fromJson(json, PostResource.class);
+        final CustomerResource resource = Json.fromJson(json, CustomerResource.class);
         return handler.create(resource).thenApplyAsync(savedResource -> {
             return created(Json.toJson(savedResource));
         }, ec.current());
